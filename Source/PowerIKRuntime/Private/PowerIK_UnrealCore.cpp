@@ -13,7 +13,7 @@ Unauthorized copying, selling or distribution of this software is strictly prohi
 #include "Rigs/RigBoneHierarchy.h"
 
 #include "DrawDebugHelpers.h"
-#include "Engine/Private/Collision/CollisionDebugDrawing.h"
+#include "CollisionDebugDrawingPublic.h"
 
 #include <string.h>
 
@@ -125,7 +125,7 @@ void FPowerIKCore::LoadBonesFromControlRig(URigHierarchy* Hierarchy)
 		// const FRigBone& RigBone = (*Hierarchy)[i];
 		
 		FPowerIKBoneData& Bone = BonesData[i];
-		Bone.BoneName = RigBoneElem->GetName();
+		Bone.BoneName = FName(*RigBoneElem->GetName());
 		CopyFNameToString(Bone.BoneName, Bone.NameString);
 		Bone.Index = RigBoneElem->GetIndex();
 		Bone.ParentIndex = RigBoneElem->ParentElement->GetIndex();
@@ -332,7 +332,7 @@ bool FPowerIKCore::InitializeSolver(
 		// make sure affected bone is in this LOD (ie. compact pose)
 		if (EftrData.CompactBoneIndex == INDEX_NONE)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("PowerIK: @@ effector referring to bone that was culled in this LOD: %s"), this, *Effectors[i].BoneName.ToString());
+			UE_LOG(LogTemp, Warning, TEXT("PowerIK: Effector referring to bone that was culled in this LOD: %s"), *Effectors[i].BoneName.ToString());
 			return false;
 		}
 
